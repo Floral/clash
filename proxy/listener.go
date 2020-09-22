@@ -250,7 +250,7 @@ func ReCreateTun(conf config.Tun) error {
 	if tunAdapter != nil {
 		if enable && (url == "" || url == tunAdapter.DeviceURL()) {
 			// Though we don't need to recreate tun device, we should update tun DNSServer
-			return tunAdapter.ReCreateDNSServer(resolver.DefaultResolver.(*dns.Resolver), conf.DNSListen)
+			return tunAdapter.ReCreateDNSServer(resolver.DefaultResolver.(*dns.Resolver), resolver.DefaultHostMapper.(*dns.ResolverEnhancer), conf.DNSListen)
 		}
 		tunAdapter.Close()
 		tunAdapter = nil
@@ -264,7 +264,7 @@ func ReCreateTun(conf config.Tun) error {
 		return err
 	}
 	if resolver.DefaultResolver != nil {
-		return tunAdapter.ReCreateDNSServer(resolver.DefaultResolver.(*dns.Resolver), conf.DNSListen)
+		return tunAdapter.ReCreateDNSServer(resolver.DefaultResolver.(*dns.Resolver), resolver.DefaultHostMapper.(*dns.ResolverEnhancer), conf.DNSListen)
 	}
 	return nil
 }
